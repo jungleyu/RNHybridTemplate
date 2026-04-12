@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">爱购</string>
+    <string name="menu_home">首页</string>
+    <string name="menu_explore">探索</string>
+    <string name="menu_ai">AI</string>
+    <string name="menu_igo">爱购</string>
+    <string name="menu_me">我的</string>
+    <string name="title_activity_main2">MainActivity2</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.igo.fragment.HomeFragment"
+        android:label="首页"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.igo.fragment.ExploreFragment"
+        android:label="探索"
+        tools:layout="@layout/fragment_explore" />
+
+    <fragment
+        android:id="@+id/aiFragment"
+        android:name="com.igo.fragment.AIFragment"
+        android:label="AI"
+        tools:layout="@layout/fragment_ai" />
+
+    <fragment
+        android:id="@+id/iGoFragment"
+        android:name="com.igo.fragment.IGoFragment"
+        android:label="爱购"
+        tools:layout="@layout/fragment_igo" />
+
+    <fragment
+        android:id="@+id/meFragment"
+        android:name="com.igo.fragment.MeFragment"
+        android:label="我的"
+        tools:layout="@layout/fragment_me" />
+
+</navigation>
