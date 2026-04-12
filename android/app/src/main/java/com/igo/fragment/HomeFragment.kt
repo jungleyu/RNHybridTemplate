@@ -30,7 +30,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // 在这里初始化视图、设置点击事件等
         binding.toRNActivity.setOnClickListener {
-            val intent = Intent(requireActivity(), RNActivity::class.java)
+            val intent = Intent(requireActivity(), RNActivity::class.java).apply{
+                putExtra("componentKey", "Detail")
+            }
             startActivity(intent)
         }
         binding.toRNFragment.setOnClickListener {

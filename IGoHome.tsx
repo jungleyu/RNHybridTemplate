@@ -1,11 +1,12 @@
 import { useCallback, useContext } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, } from "react-native";
 import { CounterContext } from "./CounterContext";
+import Navigation from './specs/NativeNavigation';
 
 export default function IGoHome() {
     const { count, increment, decrement } = useContext(CounterContext);
     const toDetail = useCallback(() => {
-
+        Navigation.navigate('Detail')
     }, []);
     return <View style={styles.page}>
         <Text style={styles.bold}>Hello, 我是RN主页</Text>
