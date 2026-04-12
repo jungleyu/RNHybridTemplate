@@ -3,21 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
+    android:gravity="center"
     android:orientation="vertical">
-
-    <Button
-        android:id="@+id/toRNActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/home_color"
-        android:textColor="@color/white"
-        android:text="Open RN Activity" />
 
     <Button
         android:id="@+id/toRNFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/home_color"
-        android:textColor="@color/white"
-        android:text="Open RN Fragment" />
+        android:text="跳转 RN Tab"
+        android:textColor="@color/white" />
+
+
+    <Button
+        android:id="@+id/toRNActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/home_color"
+        android:text="跳转 RN 详情页"
+        android:textColor="@color/white" />
+
 </LinearLayout>

@@ -24,7 +24,7 @@ class IGoFragment : Fragment(), PermissionAwareActivity {
         reactDelegate = ReactDelegate(
             requireActivity(),
             reactHost,
-            "igo", // 与JS端注册的组件名一致
+            "Home", // 与JS端注册的组件名一致
             null
         )
     }

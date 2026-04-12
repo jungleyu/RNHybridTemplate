@@ -3,7 +3,9 @@
  */
 
 import { AppRegistry } from 'react-native';
-import App from './App';
-import { name as appName } from './app.json';
+import Home from "./IGoHome";
+import Detail from "./IGoDetail";
+import { CounterContextProvider } from './CounterContext';
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent('Home', () => (props) => <CounterContextProvider><Home {...props} /></CounterContextProvider>);
+AppRegistry.registerComponent('Detail', () => (props) => <CounterContextProvider><Detail {...props} /></CounterContextProvider>);
