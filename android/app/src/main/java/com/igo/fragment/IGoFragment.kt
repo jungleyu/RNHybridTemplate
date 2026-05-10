@@ -11,8 +11,9 @@ import com.facebook.react.ReactApplication
 import com.igo.application.MainApplication
 import com.facebook.react.modules.core.PermissionAwareActivity
 import com.facebook.react.modules.core.PermissionListener
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 
-class IGoFragment : Fragment(), PermissionAwareActivity {
+class IGoFragment : Fragment(), PermissionAwareActivity, DefaultHardwareBackBtnHandler {
     private lateinit var reactDelegate: ReactDelegate
     private var disableHostLifecycleEvents = false
     private var permissionListener: PermissionListener? = null
@@ -24,7 +25,7 @@ class IGoFragment : Fragment(), PermissionAwareActivity {
         reactDelegate = ReactDelegate(
             requireActivity(),
             reactHost,
-            "Home", // 与JS端注册的组件名一致
+            "App", // 与JS端注册的组件名一致
             null
         )
     }
@@ -95,4 +96,9 @@ class IGoFragment : Fragment(), PermissionAwareActivity {
         permissionListener = listener
         requestPermissions(permissions, requestCode)
     }
+
+    override fun invokeDefaultOnBackPressed() {
+        reactDelegate.onBackPressed()
+    }
+
 }

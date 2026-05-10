@@ -9,12 +9,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.igo.R
 import com.igo.databinding.ActivityMainBinding
+import com.swmansion.rnscreens.fragment.restoration.RNScreensFragmentFactory
 
 class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
 
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
         super.onCreate(savedInstanceState)
         initViews()
         setupStatusBar()
@@ -34,8 +37,7 @@ class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
         setContentView(binding.root)
 
         // 设置toolbar与window insets的关系
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) {
-                v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(0, systemBars.top, 0, 0)
             insets
@@ -50,35 +52,40 @@ class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
         window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         // 设置状态栏文本为白色
         window.decorView.windowInsetsController?.apply {
-            setSystemBarsAppearance(0, android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+            setSystemBarsAppearance(
+                0,
+                android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
             // 显示状态栏
             show(android.view.WindowInsets.Type.statusBars())
         }
     }
 
     private fun setupNavigation() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // 设置app bar配置，包含所有底部导航项
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.exploreFragment,
-                R.id.aiFragment,
-                R.id.iGoFragment,
-                R.id.meFragment
-            )
+        val tabs = setOf(
+            R.id.homeFragment,
+            R.id.exploreFragment,
+            R.id.aiFragment,
+            R.id.iGoFragment,
+            R.id.meFragment
         )
+        val appBarConfiguration = AppBarConfiguration(tabs)
 
         // 设置toolbar与navController的关联
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // 添加导航监听器，在tab切换时改变toolbar背景色和底部导航栏颜色
-        navController.addOnDestinationChangedListener {
-                _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             updateUIForDestination(destination.id)
+            if (destination.id in tabs) {
+                navController.popBackStack(destination.id, inclusive = false)
+            }
         }
 
         binding.bottomNavView.setupWithNavController(navController)
@@ -93,18 +100,20 @@ class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
             R.id.homeFragment -> {
                 updateTabUI(View.VISIBLE, R.color.home_color)
             }
+
             R.id.exploreFragment -> {
                 updateTabUI(View.VISIBLE, R.color.explore_color)
             }
+
             R.id.aiFragment -> {
                 updateTabUI(View.VISIBLE, R.color.ai_color)
             }
+
             R.id.iGoFragment -> {
                 // 爱购tab隐藏toolbar
-                binding.toolbar.visibility = View.GONE
-                binding.bottomNavView.setBackgroundColor(getColor(R.color.igo_color))
-                window.statusBarColor = getColor(R.color.igo_color)
+                updateTabUI(View.GONE, R.color.igo_color)
             }
+
             R.id.meFragment -> {
                 updateTabUI(View.VISIBLE, R.color.me_color)
             }

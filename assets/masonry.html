@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瀑布流 · 无滚动条版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-family: system-ui, sans-serif;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 10px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .scroll-container {
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            border-radius: 20px;
+            background: #f1f5f9;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            /* 🔥 隐藏滚动条，保留滚动功能 */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        /* Chrome, Safari, Opera 隐藏滚动条 */
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 真实卡片 */
+        .card {
+            border-radius: 20px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .card.visible {
+            opacity: 1;
+        }
+
+        .image-wrapper {
+            width: 100%;
+            background: #e2e8f0;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card-img.loaded {
+            opacity: 1;
+        }
+
+        .card-content {
+            padding: 12px 14px 16px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: #475560;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        /* 骨架卡片 */
+        .skeleton-card {
+            border-radius: 20px;
+            background: #fff;
+            overflow: hidden;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .skeleton-card.fade-out {
+            opacity: 0;
+        }
+
+        .skeleton-img {
+            width: 100%;
+            background: #e2e8f0;
+            aspect-ratio: 4/3;
+            animation: pulse 1.5s infinite;
+        }
+
+        .skeleton-text {
+            padding: 12px 14px 16px;
+        }
+
+        .skeleton-line {
+            background: #e2e8f0;
+            border-radius: 6px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6
+            }
+
+            50% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: 0.6
+            }
+        }
+
+        .loader-more {
+            text-align: center;
+            padding: 20px;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="importmap">
+{
+    "imports": {
+        "react": "https://esm.sh/react@19.2.6",
+        "react-dom/client": "https://esm.sh/react-dom@19.2.6/client",
+        "@tanstack/react-virtual": "https://esm.sh/@tanstack/react-virtual@3.13.24"
+    }
+}
+</script>
+
+    <script type="module">
+        import React from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { useVirtualizer } from '@tanstack/react-virtual';
+
+        // 图片尺寸解析
+        async function getImageSizeFast(url) {
+            try {
+                const res = await fetch(url, { headers: { Range: 'bytes=0-1023' } });
+                if (!res.ok) throw new Error();
+                const buf = await res.arrayBuffer();
+                const view = new DataView(buf);
+                const magic = new Uint8Array(buf.slice(0, 12));
+                if (magic[0] === 0xFF && magic[1] === 0xD8) {
+                    let o = 2;
+                    while (o < buf.byteLength - 9) {
+                        if (view.getUint8(o++) !== 0xFF) break;
+                        const m = view.getUint8(o++);
+                        if ((m >= 0xC0 && m <= 0xC3) || (m >= 0xC5 && m <= 0xC7)) {
+                            return { width: view.getUint16(o + 5), height: view.getUint16(o + 3) };
+                        }
+                        o += view.getUint16(o);
+                    }
+                }
+                if (magic[0] === 0x89 && magic[1] === 0x50) {
+                    return { width: view.getUint32(16), height: view.getUint32(20) };
+                }
+            } catch (e) { }
+            return new Promise(r => {
+                const img = new Image();
+                img.onload = () => r({ width: img.naturalWidth, height: img.naturalHeight });
+                img.onerror = () => r({ width: 400, height: 300 });
+                img.src = url;
+            });
+        }
+
+        const INIT_COUNT = 10;
+        const GAP = 12;
+        const TEXT_HEIGHT = 88;
+        const SKELETON_HEIGHT = 380;
+        const TRANSITION_DURATION = 500;
+        const titles = ["山间薄雾", "城市光影", "静谧森林", "汪洋海风", "落日余晖", "晨曦微露", "极光之舞", "沙漠星空", "樱花雨", "雪中木屋"];
+        const descs = ["大自然最温柔的笔触，让人心旷神怡。"];
+
+        function generateRawItems(s, c) {
+            const a = [];
+            for (let i = 0; i < c; i++) {
+                const id = s + i;
+                const h = 220 + Math.random() * 360 | 0;
+                a.push({
+                    id, image: `https://picsum.photos/id/${(id % 100) + 1}/400/${h}`,
+                    title: titles[id % titles.length], description: descs[id % descs.length]
+                });
+            }
+            return a;
+        }
+
+        // 图片淡入的Card组件
+        const Card = React.memo(({ item, ratio, visible }) => {
+            const [loaded, setLoaded] = React.useState(false);
+            return React.createElement('div', { className: `card ${visible ? 'visible' : ''}` },
+                React.createElement('div', { className: 'image-wrapper', style: { aspectRatio: 1 / ratio } },
+                    React.createElement('img', {
+                        src: item.image, alt: item.title,
+                        className: loaded ? 'card-img loaded' : 'card-img',
+                        loading: 'lazy',
+                        onLoad: () => setLoaded(true)
+                    })
+                ),
+                React.createElement('div', { className: 'card-content' },
+                    React.createElement('div', { className: 'card-title' }, item.title),
+                    React.createElement('div', { className: 'card-desc' }, item.description)
+                )
+            );
+        });
+
+        // 瀑布流位置计算
+        function calcPositions(items, ratioMap, itemWidth, lanes) {
+            const columnHeights = new Array(lanes).fill(0);
+            const positions = [];
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const ratio = ratioMap.get(item.image) || 0.75;
+                const itemHeight = (itemWidth * ratio) + TEXT_HEIGHT;
+                let minCol = 0;
+                for (let c = 1; c < lanes; c++) {
+                    if (columnHeights[c] < columnHeights[minCol]) minCol = c;
+                }
+                positions.push({
+                    top: columnHeights[minCol],
+                    left: minCol * (itemWidth + GAP),
+                    height: itemHeight,
+                    lane: minCol
+                });
+                columnHeights[minCol] += itemHeight + GAP;
+            }
+            return { positions, totalHeight: Math.max(...columnHeights) };
+        }
+
+        const SkeletonCard = () => {
+            return React.createElement('div', { className: 'skeleton-card' },
+                React.createElement('div', { className: 'skeleton-img' }),
+                React.createElement('div', { className: 'skeleton-text' },
+                    React.createElement('div', { className: 'skeleton-line', style: { width: '70%', height: 18, marginBottom: 8 } }),
+                    React.createElement('div', { className: 'skeleton-line', style: { width: '100%', height: 12, marginBottom: 6 } }),
+                    React.createElement('div', { className: 'skeleton-line', style: { width: '80%', height: 12 } })
+                )
+            );
+        };
+
+        const App = () => {
+            const [phase, setPhase] = React.useState('loading');
+            const [items, setItems] = React.useState([]);
+            const [ratioMap, setRatioMap] = React.useState(new Map());
+            const scrollRef = React.useRef(null);
+            const [lanes, setLanes] = React.useState(2);
+            const [cw, setCw] = React.useState(0);
+            const [positions, setPositions] = React.useState([]);
+            const [totalHeight, setTotalHeight] = React.useState(0);
+            const [loadingMore, setLoadingMore] = React.useState(false);
+            const hasMore = items.length < 200;
+
+            // 初始化
+            React.useEffect(() => {
+                const list = generateRawItems(0, INIT_COUNT);
+                setItems(list);
+                Promise.all(list.map(it => getImageSizeFast(it.image)))
+                    .then(sizes => {
+                        const m = new Map();
+                        list.forEach((it, i) => m.set(it.image, sizes[i].height / sizes[i].width));
+                        setRatioMap(m);
+                        setPhase('transitioning');
+                        setTimeout(() => setPhase('ready'), TRANSITION_DURATION);
+                    });
+            }, []);
+
+            // 响应式
+            React.useEffect(() => {
+                const el = scrollRef.current; if (!el) return;
+                const update = () => {
+                    const w = el.clientWidth; setCw(w);
+                    setLanes(w >= 960 ? 4 : w >= 640 ? 3 : w >= 320 ? 2 : 1);
+                };
+                update();
+                const ro = new ResizeObserver(update); ro.observe(el);
+                return () => ro.disconnect();
+            }, []);
+
+            // 计算位置
+            React.useEffect(() => {
+                if (cw === 0) return;
+                const itemWidth = (cw - (lanes - 1) * GAP) / lanes;
+
+                if (phase === 'loading') {
+                    const colHeights = new Array(lanes).fill(0);
+                    const pos = [];
+                    for (let i = 0; i < lanes; i++) {
+                        pos.push({ top: 0, left: i * (itemWidth + GAP), height: SKELETON_HEIGHT, lane: i });
+                        colHeights[i] = SKELETON_HEIGHT + GAP;
+                    }
+                    setPositions(pos);
+                    setTotalHeight(Math.max(...colHeights));
+                } else {
+                    const { positions: p, totalHeight: t } = calcPositions(items, ratioMap, itemWidth, lanes);
+                    setPositions(p);
+                    setTotalHeight(t);
+                }
+            }, [phase, items, ratioMap, lanes, cw]);
+
+            const itemWidth = cw ? (cw - (lanes - 1) * GAP) / lanes : 0;
+
+            // 虚拟滚动
+            const virtualizer = useVirtualizer({
+                count: phase === 'loading' ? lanes : (items.length + (hasMore ? 1 : 0)),
+                lanes: lanes,
+                estimateSize: React.useCallback((i) => {
+                    if (phase === 'loading') return SKELETON_HEIGHT;
+                    return positions[i]?.height || 380;
+                }, [phase, positions]),
+                getScrollElement: () => scrollRef.current,
+                overscan: 8,
+                measureElement: el => el?.getBoundingClientRect().height || 380,
+            });
+
+            const vItems = virtualizer.getVirtualItems();
+
+            // 加载更多
+            React.useEffect(() => {
+                if (phase === 'loading' || !hasMore || loadingMore) return;
+                const last = vItems.at(-1);
+                if (!last || last.index < items.length - 2) return;
+                setLoadingMore(true);
+                const add = generateRawItems(items.length, 10);
+                Promise.all(add.map(it => getImageSizeFast(it.image)))
+                    .then(sizes => {
+                        const m = new Map(ratioMap);
+                        add.forEach((it, i) => m.set(it.image, sizes[i].height / sizes[i].width));
+                        setRatioMap(m);
+                        setItems(p => [...p, ...add]);
+                    }).finally(() => setLoadingMore(false));
+            }, [vItems]);
+
+            // 渲染
+            const renderItem = (vi) => {
+                const isTransition = phase === 'transitioning';
+                const isReady = phase === 'ready';
+
+                if (phase === 'loading' || isTransition) {
+                    const pos = positions[vi.index];
+                    if (!pos) return null;
+                    const style = { position: 'absolute', top: pos.top + 'px', left: pos.left + 'px', width: itemWidth + 'px' };
+                    const item = items[vi.index];
+                    const ratio = ratioMap.get(item?.image) || 0.75;
+
+                    return React.createElement(React.Fragment, { key: vi.key },
+                        // 骨架淡出
+                        React.createElement('div', { style },
+                            React.createElement('div', { className: `skeleton-card ${isTransition ? 'fade-out' : ''}` },
+                                React.createElement('div', { className: 'skeleton-img' }),
+                                React.createElement('div', { className: 'skeleton-text' },
+                                    React.createElement('div', { className: 'skeleton-line', style: { width: '70%', height: 18, marginBottom: 8 } }),
+                                    React.createElement('div', { className: 'skeleton-line', style: { width: '100%', height: 12, marginBottom: 6 } }),
+                                    React.createElement('div', { className: 'skeleton-line', style: { width: '80%', height: 12 } })
+                                )
+                            )
+                        ),
+                        // 卡片淡入 + 图片自己淡入
+                        isTransition && item && React.createElement('div', { style },
+                            React.createElement(Card, { item, ratio, visible: true })
+                        )
+                    );
+                }
+
+                if (vi.index >= items.length) {
+                    const pos = positions[positions.length - 1] || { top: 0, left: 0 };
+                    const style = { position: 'absolute', top: pos.top + pos.height + GAP + 'px', left: 0, width: '100%' };
+                    return React.createElement('div', { key: vi.key, style },
+                        React.createElement('div', { className: 'loader-more' }, loadingMore ? '⏳ 加载中...' : '✨ 已全部加载')
+                    );
+                }
+
+                const pos = positions[vi.index];
+                if (!pos) return null;
+                const item = items[vi.index];
+                const ratio = ratioMap.get(item.image) || 0.75;
+                const style = { position: 'absolute', top: pos.top + 'px', left: pos.left + 'px', width: itemWidth + 'px', paddingBottom: GAP + 'px' };
+
+                return React.createElement('div', { key: vi.key, ref: virtualizer.measureElement, style },
+                    React.createElement(Card, { item, ratio, visible: true })
+                );
+            };
+
+            return React.createElement('div', { className: 'app-container' },
+                React.createElement('h1', null, '📸 瀑布流 · 让人心旷神怡'),
+                React.createElement('div', { ref: scrollRef, className: 'scroll-container' },
+                    React.createElement('div', { style: { position: 'relative', height: totalHeight + 'px', width: '100%' } },
+                        vItems.map(renderItem)
+                    )
+                )
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+    </script>
+</body>
+
+</html>

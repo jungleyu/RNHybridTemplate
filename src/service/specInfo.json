@@ -1,0 +1,258 @@
+{
+    "resultCode": 0,
+    "msg": "success",
+    "data": {
+        "skuList": [
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66222,
+                "mcdsId": "2026011916184702901366707",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（1kg/瓶，白桃APG）",
+                "originPrice": 1890,
+                "price": 1800,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/03/31/2038867540802596864/1774938876694.jpg",
+                "spec": {
+                    "1710251803108454400": "白桃APG",
+                    "1710251803112648704": "1kg/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66274,
+                "mcdsId": "2026011916185944601366828",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（220g/瓶，白桃APG）",
+                "originPrice": 2900,
+                "price": 650,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164256586764288/1768810736201.jpg",
+                "spec": {
+                    "1710251803108454400": "白桃APG",
+                    "1710251803112648704": "220g/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66289,
+                "mcdsId": "2026011916190384101366872",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（1kg/瓶，莓果酵素）",
+                "originPrice": 2490,
+                "price": 1990,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164276500779008/1768810740950.jpg",
+                "spec": {
+                    "1710251803108454400": "莓果酵素",
+                    "1710251803112648704": "1kg/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66296,
+                "mcdsId": "2026011916203125701367065",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（1kg/瓶，青提茉莉）",
+                "originPrice": 2490,
+                "price": 2300,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164283928891392/1768810742721.jpg",
+                "spec": {
+                    "1710251803108454400": "青提茉莉",
+                    "1710251803112648704": "1kg/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66299,
+                "mcdsId": "2026011916203363301367068",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（500g/瓶，石榴果醋）",
+                "originPrice": 2100,
+                "price": 1590,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164287716888576/1768810743623.jpg",
+                "spec": {
+                    "1710251803108454400": "石榴果醋",
+                    "1710251803112648704": "500g/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66301,
+                "mcdsId": "2026011916191057401366897",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（500g/瓶，天然茶籽）",
+                "originPrice": 980,
+                "price": 890,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164231286722560/1768810730170.jpg",
+                "spec": {
+                    "1710251803108454400": "天然茶籽",
+                    "1710251803112648704": "500g/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66302,
+                "mcdsId": "2026011916203857901367071",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（488g/瓶，青提茉莉）",
+                "originPrice": 1990,
+                "price": 1390,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/22/2014178547540021248/1769052562007.jpg",
+                "spec": {
+                    "1710251803108454400": "青提茉莉",
+                    "1710251803112648704": "488g/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 66309,
+                "mcdsId": "2026011916205018301367082",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（1kg/瓶，石榴果醋）",
+                "originPrice": 2990,
+                "price": 2500,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164289389875200/1768810744022.jpg",
+                "spec": {
+                    "1710251803108454400": "石榴果醋",
+                    "1710251803112648704": "1kg/瓶"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            },
+            {
+                "activityType": 0,
+                "allSmartBeanTag": null,
+                "deliveryFlag": null,
+                "id": 72099,
+                "mcdsId": "2026041315524456201467541",
+                "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（80g/袋，白桃APG）",
+                "originPrice": 490,
+                "price": 450,
+                "salesFlag": true,
+                "salesType": null,
+                "skuPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/04/13/2043598235160629248/1776066762128.jpg",
+                "spec": {
+                    "1710251803108454400": "白桃APG",
+                    "1710251803112648704": "80g/袋"
+                },
+                "stockFlag": true,
+                "vipPrice": null
+            }
+        ],
+        "specList": [
+            {
+                "code": "1710251803108454400",
+                "items": [
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "白桃APG"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "莓果酵素"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "青提茉莉"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "石榴果醋"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "天然茶籽"
+                    }
+                ],
+                "name": "选择样式"
+            },
+            {
+                "code": "1710251803112648704",
+                "items": [
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "1kg/瓶"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "220g/瓶"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "500g/瓶"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "488g/瓶"
+                    },
+                    {
+                        "pic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+                        "value": "80g/袋"
+                    }
+                ],
+                "name": "选择规格"
+            }
+        ],
+        "spuInfo": {
+            "businessLicense": null,
+            "deliveryPeriod": null,
+            "detailImages": null,
+            "detailText": null,
+            "featureTag": null,
+            "feedsPic": "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164235396599808/1768810731149.jpg",
+            "headImages": [
+                "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164232666648576/1768810730500.jpg"
+            ],
+            "id": null,
+            "introduceId": null,
+            "introduceName": null,
+            "name": null,
+            "onlineServiceUrl": null,
+            "partnerId": null,
+            "partnerName": null,
+            "propertyList": null,
+            "richText": null,
+            "serviceGuarantees": null,
+            "specPos": [
+                "1710251803108454400",
+                "1710251803112648704"
+            ]
+        }
+    }
+}

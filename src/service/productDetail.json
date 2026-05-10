@@ -1,0 +1,57 @@
+{
+    "resultCode": 0,
+    "msg": "success",
+    "data": {
+        "salesPageInfo": {
+            "id": 33849,
+            "name": "立白",
+            "volume": 0,
+            "description": null,
+            "mcdsDetaiInfo": null
+        },
+        "skuInfo": {
+            "id": 72099,
+            "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选（80g/袋，白桃APG）",
+            "price": 450,
+            "vipPrice": null,
+            "originPrice": 490,
+            "spec": {
+                "1710251803108454400": "白桃APG",
+                "1710251803112648704": "80g/袋"
+            },
+            "deliveryFlag": null,
+            "salesFlag": true,
+            "stockFlag": true,
+            "mcdsId": "2026041315524456201467541",
+            "salesType": 6,
+            "activityType": 0,
+            "allSmartBeanTag": null,
+            "skuPic": null
+        },
+        "spuInfo": {
+            "id": 1727386736776171500,
+            "name": "立白 白桃/莓果/石榴/青提/茶籽洗洁精 清新去油去味洗涤灵 健康护手洗涤剂洗洁剂 多规格可选",
+            "headImages": [
+                "https://res.coc.10086.cn/res/cdn/coc1/2026/01/19/2013164232666648576/1768810730500.jpg"
+            ],
+            "featureTag": null,
+            "detailText": null,
+            "detailImages": null,
+            "specPos": [
+                "1710251803108454400",
+                "1710251803112648704"
+            ],
+            "deliveryPeriod": 48,
+            "serviceGuarantees": null,
+            "propertyList": null,
+            "businessLicense": "https://res.coc.10086.cn/res/cdn/staging/coc1/2025/09/29/1972580204732805120/1759134744208.jpg",
+            "onlineServiceUrl": "https://wx.10086.cn/website/customerService/auth/Lm8HXpJXYcB2meXyetumh5kUjS2SxDri?sourceid=017018",
+            "introduceId": "2110002018",
+            "introduceName": "中移动金融科技有限公司",
+            "partnerId": "2010374764",
+            "partnerName": "北京博奥维科技发展有限公司",
+            "richText": "<p><img src=\"https://jf-asset2.10086.cn/pic/rich/202512/693d2fc068a5683b933688a5.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3eeb68a5683b9336fa2e.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3ef268a5683b9336fa2f.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3ef868a5683b9336fa30.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3efd68a5683b9336fa31.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f0768a5683b9336fa33.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f0c68a5683b9336fa34.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f1168a5683b9336fa35.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f1668a5683b9336fa36.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f1e68a5683b9336fa37.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3f9668a5683b9336fa39.jpg\" alt=\"\" data-href=\"\" style=\"\"/><img src=\"https://jf-asset2.10086.cn/pic/rich/202603/69ca3fa368a5683b9336fa3a.jpg\" alt=\"\" data-href=\"\" style=\"\"/></p>",
+            "feedsPic": null
+        }
+    }
+}

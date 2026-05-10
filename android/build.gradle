@@ -13,6 +13,20 @@
 //    alias(libs.plugins.android.application) apply false
 //}
 
+//Below part is added for async storage
+allprojects {
+    repositories {
+        // ... others like google(), mavenCentral()
+        google()
+        mavenCentral()
+        
+        maven {
+            url = uri(project(":react-native-async-storage_async-storage").file("local_repo"))
+            // or uri("path/to/node_modules/@react-native-async-storage/async-storage/android/local_repo")
+        }
+    }
+}
+
 buildscript {
     ext {
         buildToolsVersion = "36.0.0"
