@@ -59,8 +59,7 @@ export default defineConfig({
         host: '0.0.0.0',
 
     },
-    base: '/',
-    root: 'public',
+    base: '/RNHybridTemplate/',
     optimizeDeps: {
         include: [
             'react-native-web',
@@ -70,7 +69,7 @@ export default defineConfig({
     },
     assetsInclude: ['assets/*.html'],
     build: {
-        outDir: '../dist-web',
+        outDir: './dist-web',
         sourcemap: false,                    // 生产环境不生成 sourcemap（若需要可设 true）
         minify: 'terser',                // 使用字符串形式
         terserOptions: {
@@ -96,9 +95,6 @@ export default defineConfig({
             output: {
                 // 手动分割 chunk（可选）
                 manualChunks(id) {
-                    if (id.includes('node_modules/react-native')) {
-                        return 'vendor-rn';
-                    }
                     if (id.includes('node_modules/react')) {
                         return 'vendor-react';
                     }

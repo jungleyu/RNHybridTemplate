@@ -23,7 +23,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn vite:build
+        run: yarn vite:build && cp dist-web/index.html dist-web/404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
