@@ -48,7 +48,7 @@ export default function Home() {
     }, []);
 
     const toPage = useCallback((pageId: string) => {
-        Navigation.navigate(pageId)
+        Navigation.navigate(pageId, undefined)
     }, []);
 
 
@@ -99,7 +99,10 @@ export default function Home() {
     }, [toPage]);
 
     if (!products.length) {
-        return null;
+        return <>
+            <HomeHeader />
+            {renderListFooter()}
+        </>
     }
 
     return <FlatList

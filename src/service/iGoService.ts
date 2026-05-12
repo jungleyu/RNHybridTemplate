@@ -8,7 +8,8 @@ const NATIVE_API_BASE = 'https://dev.coc.10086.cn';
 
 const getBaseUrl = () => {
     if (Platform.OS === 'web') {
-        return '/';
+        // return '/';
+        return NATIVE_API_BASE
     }
     return NATIVE_API_BASE;
 }
