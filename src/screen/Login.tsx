@@ -70,7 +70,7 @@ const Login = () => {
                 <TextInput ref={smsInputRef} style={styles.input} placeholder='获取验证码' keyboardType='number-pad' underlineStyle={styles.underline} onChangeText={setSMSCode} />
                 <CountDownButton style={styles.smsBtn} onPress={getSMSCode} />
             </View>
-            <Button style={styles.loginBtn} mode='contained' onPress={doLogin}>Login</Button>
+            <Button style={styles.loginBtn} mode='contained' onPress={doLogin}>登录</Button>
         </View>
     )
 }

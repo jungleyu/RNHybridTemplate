@@ -18,12 +18,15 @@ import {
     Alert,
     Linking,
 } from 'react-native';
-import {
+//@ts-ignore
+import EnrichedMarkdown, {
     EnrichedMarkdownText,
     type LinkPressEvent,
 } from 'react-native-enriched-markdown';
 import { processRemendInWorklet } from './remendWorklet';
 import { streamOpenAIResponse } from './openAIStream';
+
+const MarkDown = Platform.OS === 'web' ? EnrichedMarkdown : EnrichedMarkdownText;
 
 const BASE_SYSTEM_PROMPT = [
     'You are a helpful assistant. Respond using CommonMark markdown',
@@ -36,22 +39,8 @@ const BASE_SYSTEM_PROMPT = [
     'Do not use GitHub Flavored Markdown (no tables, no strikethrough).',
 ].join('\n');
 
-const PRESETS = [
-    { label: '🌍 Solar system', prompt: 'Tell me about the solar system.' },
-    {
-        label: '⚛️ Physics equations',
-        prompt:
-            'List the five most important equations in physics with a one-sentence explanation each. Use inline LaTeX for every equation.',
-    },
-    {
-        label: '🚀 Space exploration',
-        prompt: 'Give me a brief history of human space exploration.',
-    },
-] as const;
-
-export default function LLMStreamingDemo() {
-    const [prompt, setPrompt] = useState<string>(PRESETS[0].prompt);
-    const [activePreset, setActivePreset] = useState<number>(0);
+export default function ChatScreen() {
+    const [prompt, setPrompt] = useState<string>('');
     const [optimisticMarkdown, setOptimisticMarkdown] = useState('');
     const [isStreaming, setIsStreaming] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -78,13 +67,6 @@ export default function LLMStreamingDemo() {
     const handleError = useCallback((message: string) => {
         setError(message);
         setIsStreaming(false);
-    }, []);
-
-    const selectPreset = useCallback((index: number) => {
-        const preset = PRESETS[index];
-        if (!preset) return;
-        setActivePreset(index);
-        setPrompt(preset.prompt);
     }, []);
 
     const startStreaming = useCallback(() => {
@@ -137,37 +119,11 @@ export default function LLMStreamingDemo() {
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
             <View style={styles.inputSection}>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.presetScroll}
-                    contentContainerStyle={styles.presetRow}
-                >
-                    {PRESETS.map((preset, index) => (
-                        <TouchableOpacity
-                            key={preset.label}
-                            style={[styles.chip, activePreset === index && styles.chipActive]}
-                            onPress={() => selectPreset(index)}
-                            disabled={isStreaming}
-                        >
-                            <Text
-                                style={[
-                                    styles.chipText,
-                                    activePreset === index && styles.chipTextActive,
-                                ]}
-                            >
-                                {preset.label}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-
                 <TextInput
                     style={styles.input}
                     value={prompt}
                     onChangeText={(text) => {
                         setPrompt(text);
-                        setActivePreset(-1);
                     }}
                     placeholder="Ask anything…"
                     placeholderTextColor="#999"
@@ -214,7 +170,7 @@ export default function LLMStreamingDemo() {
                     </View>
                 ) : optimisticMarkdown.length > 0 ? (
                     <>
-                        <EnrichedMarkdownText
+                        <MarkDown
                             markdown={optimisticMarkdown}
                             streamingAnimation
                             selectable={!isStreaming}
@@ -244,30 +200,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#ccc',
-    },
-    presetScroll: {
-        marginBottom: 10,
-    },
-    presetRow: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-    chip: {
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
-        backgroundColor: '#e0e0e0',
-    },
-    chipActive: {
-        backgroundColor: '#FF9500',
-    },
-    chipText: {
-        fontSize: 13,
-        color: '#444',
-        fontWeight: '500',
-    },
-    chipTextActive: {
-        color: '#fff',
     },
     input: {
         backgroundColor: '#fff',

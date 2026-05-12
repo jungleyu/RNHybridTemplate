@@ -2,10 +2,20 @@ import axios from "axios";
 import { md5 } from "js-md5";
 import uuid from 'react-native-uuid';
 import { authStorage } from "../utils/Storage";
+import { Platform } from "react-native";
+
+const NATIVE_API_BASE = 'https://dev.coc.10086.cn';
+
+const getBaseUrl = () => {
+    if (Platform.OS === 'web') {
+        return '/';
+    }
+    return NATIVE_API_BASE;
+}
 
 const api = axios.create({
     timeout: 10000,
-    baseURL: 'https://dev.coc.10086.cn',
+    baseURL: getBaseUrl(),
     withCredentials: true,
 });
 
@@ -113,7 +123,6 @@ export async function getEvaluationList(pageNum: number = 1, pageSize: number = 
     }, {
         headers: {
             'Referer': 'https://dev.coc.10086.cn/'
-
         }
     })
     return Promise.resolve(resp.data.data);

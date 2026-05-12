@@ -10,7 +10,7 @@ const UserInfoCard = () => {
 
     const toLogin = useCallback(() => {
         navigation.dispatch(StackActions.replace('Login'));
-    }, []);
+    }, [navigation]);
 
     if (user) {
         return <View style={[styles.cardLeft, styles.info]}>
@@ -20,7 +20,7 @@ const UserInfoCard = () => {
 
     return (
         <TouchableRipple style={styles.cardLeft} onPress={toLogin}>
-            <Image style={{ flex: 1, }} resizeMode='cover' source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1/2025/09/24/1970760041638453248/c8bf2ff9a05a1f1702979beb0660f215_compressed.png' }} />
+            <Image style={styles.img} resizeMode='cover' source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1/2025/09/24/1970760041638453248/c8bf2ff9a05a1f1702979beb0660f215_compressed.png' }} />
         </TouchableRipple>
     )
 }
@@ -29,9 +29,9 @@ export default UserInfoCard
 
 const styles = StyleSheet.create({
     cardLeft: {
-        flex: 1,
+        flex: 2,
         borderRadius: 12,
-        height: 120,
+        aspectRatio: 2,
         marginRight: 8,
         overflow: 'hidden'
     },
@@ -42,5 +42,9 @@ const styles = StyleSheet.create({
     infoText: {
         fontSize: 14,
         fontWeight: 'bold'
+    },
+    img: {
+        height: '100%',
+        width: '100%'
     }
 })

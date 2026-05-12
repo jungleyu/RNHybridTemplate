@@ -2,8 +2,10 @@
     "extends": "@react-native/typescript-config",
     "compilerOptions": {
         "types": [
-            "jest"
-        ]
+            "jest",
+            "react-native-web"
+        ],
+        "lib": ["dom", "esnext"],
     },
     "include": [
         "**/*.ts",

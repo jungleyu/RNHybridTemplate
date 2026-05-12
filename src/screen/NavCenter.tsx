@@ -4,12 +4,16 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider } from "../store/AuthContext";
 import { lazy, Suspense, useEffect } from "react";
 import { ActivityIndicator, BackHandler, Platform, View } from "react-native";
+import { TrueSheetProvider } from "@lodev09/react-native-true-sheet";
+import { navigationRef } from "../utils/navigation";
 
 // import Home from './Home';
 // import Detail from "./Detail";
 // import WebView from "./WebView";
 // import Login from "./Login";
 // import TangibleDetail from "./TangibleDetail";
+// import ShoppingCart from "./ShoppingCart";
+// import Chat from "./Chat";
 
 const Fallback = () => (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -71,6 +75,9 @@ function MyStack({ componentKey, ...initialParams }: Record<string, any>) {
                     headerTitleAlign: 'center',
                     headerTintColor: '#FFF',
                     gestureEnabled: true,
+                    cardStyle: {
+                        flex: 1, // 设置flex: 1 或 height: '100%' web下的scroll才能正确应用到列表组件
+                    },
                     ...TransitionPresets.SlideFromRightIOS
                 }
             }
@@ -85,7 +92,7 @@ function MyStack({ componentKey, ...initialParams }: Record<string, any>) {
                 initialParams={initialParams}
                 component={TangibleDetail}
                 options={{
-                    headerShown: false
+                    headerShown: false,
                 }} />
             <Stack.Screen name="ShoppingCart" component={ShoppingCart} options={{
                 headerTitle: '购物车'
@@ -98,9 +105,12 @@ const NavCenter = ({ componentKey, rootTag, ...rest }: { componentKey: string, r
     return (
         <GestureHandlerRootView key={rootTag}>
             <AuthProvider>
-                <NavigationContainer>
-                    <MyStack componentKey={componentKey} {...rest} />
-                </NavigationContainer>
+                <TrueSheetProvider>
+                    {/** @ts-ignore **/}
+                    <NavigationContainer ref={navigationRef} linking={{ enabled: 'auto' as any }}>
+                        <MyStack componentKey={componentKey} {...rest} />
+                    </NavigationContainer>
+                </TrueSheetProvider>
             </AuthProvider>
         </GestureHandlerRootView>
     )

@@ -1,46 +1,34 @@
 import { useCallback, useEffect, useState, } from "react";
-import { FlatList, Image, ImageBackground, Platform, StyleSheet, Text, View, } from "react-native";
+import { FlatList, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
 
-// import { useNavigation } from "@react-navigation/native";
-import { Button, Searchbar, TouchableRipple } from "react-native-paper";
-import PagerView from "react-native-pager-view";
+import { Button, } from "react-native-paper";
 import UserInfoCard from "../component/UserInfoCard";
 import { getProductByGroupId } from "../service/iGoService";
 import DailyLifeList from "../component/DailyLifeList";
 import PriceLabel from "../component/PriceLabel";
 
-// import Navigation from './specs/NativeNavigation';
-const Navigation = Platform.OS === 'web' ? {
-    navigate: (_: string) => { }
-} : require('../../specs/NativeNavigation').default;
+import Navigation from '../../specs/NativeNavigation';
 
 function HomeHeader() {
-    return <><View style={styles.card}>
-        <UserInfoCard />
-        <View style={styles.cardRight}>
-            <Image style={styles.cardRight} resizeMode='cover' source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1/2025/09/26/1971432107962327040/3816ecba0c7921261fcc41755cde5212.png' }} />
-            <Text style={styles.cardRightText}>开通智臻会员</Text>
+    return <>
+        <View style={styles.card}>
+            <UserInfoCard />
+            <View style={styles.cardRight}>
+                <Image style={styles.cardRight} resizeMode='cover' source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1/2025/09/26/1971432107962327040/3816ecba0c7921261fcc41755cde5212.png' }} />
+                <Text style={styles.cardRightText}>开通智臻会员</Text>
+            </View>
         </View>
-    </View>
 
-        <Searchbar style={styles.searchBar} value="" placeholder="点击搜索好物" />
+        <TouchableOpacity style={styles.searchBar}>
+            <Image style={styles.search} resizeMode='cover' source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1/2026/03/09/2030913467512057856/1773042478988_629559.png.webp' }} />
+        </TouchableOpacity>
 
         <DailyLifeList />
-
-        <PagerView style={styles.pagerContainer} initialPage={0}>
-            <View key="1" style={{ height: 120, }}>
-                <Text>First page</Text>
-            </View>
-            <View key="2" style={{ height: 240, }}>
-                <Text>Second page</Text>
-            </View>
-        </PagerView>
     </>
 }
 
 const tabs = ['精选', '通信', '权益', '百货', '数码']
 export default function Home() {
-    // const navigation = useNavigation();
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -54,18 +42,13 @@ export default function Home() {
     }, []);
 
     const toProductDetail = useCallback((mid: string, skuId: string) => {
-        // navigation.dispatch(StackActions.push('TangibleDetail', {
-        //     mid,
-        //     skuId,
-        // }))
         Navigation.navigate('TangibleDetail', {
             mid, skuId
         });
     }, []);
 
     const toPage = useCallback((pageId: string) => {
-        // navigation.navigate('Detail')
-        Navigation.navigate(pageId, null)
+        Navigation.navigate(pageId)
     }, []);
 
 
@@ -82,7 +65,7 @@ export default function Home() {
     }, []);
 
     const renderItem = useCallback(({ item }: { item: Record<string, any> }) => {
-        return <TouchableRipple style={styles.goodItem} onPress={() => toProductDetail(`${item.mid}`, `${item.id}`)}>
+        return <TouchableOpacity style={styles.goodItem} onPress={() => toProductDetail(`${item.mid}`, `${item.id}`)}>
             <>
                 <Image style={styles.goodImg} resizeMode='contain' source={{ uri: item.cdnUrl }} />
                 <View style={styles.goodInfo}>
@@ -95,7 +78,7 @@ export default function Home() {
                     </ImageBackground>
                 </View>
             </>
-        </TouchableRipple>
+        </TouchableOpacity>
     }, [toProductDetail])
 
     const renderListFooter = useCallback(() => {
@@ -113,13 +96,14 @@ export default function Home() {
                 点击跳转Chat
             </Button>
         </>
-    }, [toPage])
+    }, [toPage]);
 
     if (!products.length) {
         return null;
     }
 
     return <FlatList
+        style={styles.list}
         contentContainerStyle={styles.page}
         data={products}
         ListHeaderComponent={HomeHeader}
@@ -136,6 +120,9 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+    list: {
+        flex: 1,
+    },
     page: {
         padding: 12,
     },
@@ -148,23 +135,27 @@ const styles = StyleSheet.create({
     },
     card: {
         flexDirection: 'row',
-        height: 120,
     },
     cardRight: {
-        width: 130,
-        height: 120,
+        flex: 1,
+        aspectRatio: 1,
         borderRadius: 12,
     },
     cardRightText: {
         fontSize: 14,
-        lineHeight: 36,
         height: 36,
-        paddingLeft: 14,
+        paddingLeft: '10%',
+        paddingTop: '6%',
         position: 'absolute',
         fontWeight: 'bold',
     },
     searchBar: {
-        marginVertical: 12,
+        marginTop: 12,
+        width: '100%',
+        aspectRatio: 125 / 9
+    },
+    search: {
+        flex: 1,
     },
     pagerContainer: {
         height: 'auto'

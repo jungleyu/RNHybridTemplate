@@ -75,13 +75,13 @@ const TangibleDetail = () => {
     }, [navigation]);
 
     return (
-        <>
+        <View style={[styles.f1, { maxHeight: '100%' }]}>
             <ScrollView style={styles.f1}>
                 <View style={styles.basicInfo}>
                     <Image style={{ width, height: width }} source={{ uri: data.headImage }} />
                     <View style={styles.sellInfo}>
                         <PriceLabel price={data.price} color='#fe642b' />
-                        <Text style={styles.sellText}>{`已售${data.salesCount}件`}</Text>
+                        <Text style={styles.sellText}>{`已售${data.salesCount ?? 0}件`}</Text>
                     </View>
                     <Text style={styles.name} numberOfLines={2} ellipsizeMode='tail'>{data.name}</Text>
                     {
@@ -268,7 +268,7 @@ const TangibleDetail = () => {
             >
                 {isValidElement(SheetChild) && SheetChild}
             </TrueSheet>
-        </>
+        </View>
     )
 }
 
@@ -277,6 +277,7 @@ export default TangibleDetail
 const styles = StyleSheet.create({
     f1: {
         flex: 1,
+        flexDirection: 'column',
         backgroundColor: '#f4f5f6'
     },
     basicInfo: {
