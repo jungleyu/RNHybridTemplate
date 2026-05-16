@@ -11,9 +11,7 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    ScrollView,
     ActivityIndicator,
-    KeyboardAvoidingView,
     Platform,
     Alert,
     Linking,
@@ -25,6 +23,8 @@ import EnrichedMarkdown, {
 } from 'react-native-enriched-markdown';
 import { processRemendInWorklet } from './remendWorklet';
 import { streamOpenAIResponse } from './openAIStream';
+import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 
 const MarkDown = Platform.OS === 'web' ? EnrichedMarkdown : EnrichedMarkdownText;
 
@@ -114,11 +114,43 @@ export default function ChatScreen() {
     }, []);
 
     return (
-        <KeyboardAvoidingView
+        <View
             style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-            <View style={styles.inputSection}>
+            <ScrollView
+                ref={scrollRef}
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                onContentSizeChange={handleContentSizeChange}
+                keyboardShouldPersistTaps="handled"
+            >
+                {error ? (
+                    <View style={styles.errorBox}>
+                        <Text style={styles.errorText}>{error}</Text>
+                    </View>
+                ) : optimisticMarkdown.length > 0 ? (
+                    <>
+                        <MarkDown
+                            markdown={optimisticMarkdown}
+                            streamingAnimation
+                            selectable={!isStreaming}
+                            onLinkPress={handleLinkPress}
+                        />
+                        {isStreaming && (
+                            <Text style={styles.streamingDot}>● Streaming…</Text>
+                        )}
+                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} />
+                    </>
+                ) : (
+                    <Text style={styles.placeholder}>Response will appear here…</Text>
+                )}
+            </ScrollView>
+            <KeyboardStickyView style={styles.inputSection}>
                 <TextInput
                     style={styles.input}
                     value={prompt}
@@ -155,36 +187,8 @@ export default function ChatScreen() {
                         <Text style={styles.buttonText}>Clear</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-
-            <ScrollView
-                ref={scrollRef}
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
-                onContentSizeChange={handleContentSizeChange}
-                keyboardShouldPersistTaps="handled"
-            >
-                {error ? (
-                    <View style={styles.errorBox}>
-                        <Text style={styles.errorText}>{error}</Text>
-                    </View>
-                ) : optimisticMarkdown.length > 0 ? (
-                    <>
-                        <MarkDown
-                            markdown={optimisticMarkdown}
-                            streamingAnimation
-                            selectable={!isStreaming}
-                            onLinkPress={handleLinkPress}
-                        />
-                        {isStreaming && (
-                            <Text style={styles.streamingDot}>● Streaming…</Text>
-                        )}
-                    </>
-                ) : (
-                    <Text style={styles.placeholder}>Response will appear here…</Text>
-                )}
-            </ScrollView>
-        </KeyboardAvoidingView>
+            </KeyboardStickyView>
+        </View>
     );
 }
 

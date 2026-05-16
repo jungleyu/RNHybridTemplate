@@ -5,6 +5,7 @@ import { AuthProvider } from "../store/AuthContext";
 import { lazy, Suspense, useEffect } from "react";
 import { ActivityIndicator, BackHandler, Platform, View } from "react-native";
 import { TrueSheetProvider } from "@lodev09/react-native-true-sheet";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { navigationRef } from "../utils/navigation";
 
 // import Home from './Home';
@@ -105,12 +106,14 @@ const NavCenter = ({ componentKey, rootTag, ...rest }: { componentKey: string, r
     return (
         <GestureHandlerRootView key={rootTag}>
             <AuthProvider>
-                <TrueSheetProvider>
-                    {/** @ts-ignore **/}
-                    <NavigationContainer ref={navigationRef} linking={{ enabled: 'auto' as any }}>
-                        <MyStack componentKey={componentKey} {...rest} />
-                    </NavigationContainer>
-                </TrueSheetProvider>
+                <KeyboardProvider>
+                    <TrueSheetProvider>
+                        {/** @ts-ignore **/}
+                        <NavigationContainer ref={navigationRef} linking={{ enabled: 'auto' as any }}>
+                            <MyStack componentKey={componentKey} {...rest} />
+                        </NavigationContainer>
+                    </TrueSheetProvider>
+                </KeyboardProvider>
             </AuthProvider>
         </GestureHandlerRootView>
     )

@@ -2,15 +2,17 @@ import axios from "axios";
 import { md5 } from "js-md5";
 import uuid from 'react-native-uuid';
 import { authStorage } from "../utils/Storage";
-import { Platform } from "react-native";
+// import { Platform } from "react-native";
 
 const NATIVE_API_BASE = 'https://dev.coc.10086.cn';
 
 const getBaseUrl = () => {
-    if (Platform.OS === 'web') {
-        // return '/';
-        return NATIVE_API_BASE
-    }
+    // if (Platform.OS === 'web') {
+    //     if (import.meta.env.DEV) {
+    //         return '/';                     // 开发模式下走 Vite 代理
+    //     }
+    //     return import.meta.env.VITE_API_BASE_URL as string; // 生产模式真实地址
+    // }
     return NATIVE_API_BASE;
 }
 

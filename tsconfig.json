@@ -3,9 +3,10 @@
     "compilerOptions": {
         "types": [
             "jest",
-            "react-native-web"
+            "react-native-web",
         ],
         "lib": ["dom", "esnext"],
+        "moduleSuffixes": [".android", ".ios", ".native", ".web", ""]
     },
     "include": [
         "**/*.ts",

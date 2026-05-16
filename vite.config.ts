@@ -3,7 +3,7 @@ import { rnw } from "vite-plugin-rnw";
 import path from "node:path";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [
         rnw({
             jsxRuntime: "automatic",
@@ -59,15 +59,50 @@ export default defineConfig({
         host: '0.0.0.0',
 
     },
-    base: '/RNHybridTemplate/',
     optimizeDeps: {
         include: [
+            // 核心框架（Vite 默认已包含，显式声明更安全）
+            'react',
+            'react-dom',
             'react-native-web',
-            'react-native-webview',
-            'react-native-gesture-handler'
+
+            // 导航及其依赖
+            '@react-navigation/native',
+            '@react-navigation/stack',
+            'react-native-screens',
+            'react-native-safe-area-context',
+
+            // 动画与手势（官方有 Web 实现，必须预构建）
+            'react-native-reanimated',
+            'react-native-gesture-handler',
+
+            // UI 组件库（基于 RN Web，通常为 CJS 或需转译）
+            'react-native-paper',
+            '@gorhom/bottom-sheet',
+            '@lodev09/react-native-true-sheet',
+
+            // Markdown 渲染（已适配 Web，但可能内部含 CJS）
+            'react-native-enriched-markdown',
+            'react-native-streamdown',
+
+            // 其他常用 RN 扩展（有 Web 支持）
+            'react-native-uuid',
+            'react-native-sse',
+            'react-native-worklets',
+
+            // 纯 CJS 工具库（不含原生代码，但需要被 ESM 化）
+            'crypto-js',
+            'js-md5',
+            'jsencrypt',
+            'lodash.find',
+            'axios',
         ],
+        exclude: [
+            'react-native-webview'
+        ]
     },
     assetsInclude: ['assets/*.html'],
+    base: mode === 'production' ? '/RNHybridTemplate/' : '/',
     build: {
         outDir: './dist-web',
         sourcemap: false,                    // 生产环境不生成 sourcemap（若需要可设 true）
@@ -95,9 +130,10 @@ export default defineConfig({
             output: {
                 // 手动分割 chunk（可选）
                 manualChunks(id) {
-                    if (id.includes('node_modules/react')) {
-                        return 'vendor-react';
-                    }
+                    if (id.includes('node_modules/react-native-web')) return 'rnw';
+                    if (id.includes('node_modules/react')) return 'react';
+                    if (id.includes('node_modules/@react-navigation')) return 'navigation';
+                    if (id.includes('node_modules/react-native-reanimated')) return 'reanimated';
                 },
             },
         }
@@ -107,4 +143,4 @@ export default defineConfig({
         port: 4173,
         open: true,
     },
-});
+}));

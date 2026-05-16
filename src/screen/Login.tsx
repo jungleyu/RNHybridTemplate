@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, ToastAndroid, TextInput as RNTextInput } from 'react-native'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { useAuth } from '../store/AuthContext'
 import { StackActions, useNavigation } from '@react-navigation/native'
@@ -20,30 +20,30 @@ function sendCodeRSAEncrypt(value: string): { p1: string, p2: string } {
 }
 
 const Login = () => {
-    const [phone, setPhone] = useState('');
-    const [smsCode, setSMSCode] = useState('');
+    const phone = useRef('');
+    const smsCode = useRef('');
     const smsInputRef = useRef<RNTextInput>(null);
     const navigation = useNavigation();
     const { login } = useAuth();
     const doLogin = useCallback(() => {
         //@ts-ignore
-        const encodedPhone = globalThis.btoa(phone).split("").reverse().join("");
+        const encodedPhone = globalThis.btoa(phone.current).split("").reverse().join("");
         //@ts-ignore
-        const encodedSMS = globalThis.btoa(smsCode).split("").reverse().join("");
+        const encodedSMS = globalThis.btoa(smsCode.current).split("").reverse().join("");
         const phoneP1 = sendCodeRSAEncrypt(encodedPhone).p1;
         const smsP1 = sendCodeRSAEncrypt(encodedSMS).p1;
         login({
             m1: phoneP1,
-            m2: enCrypten(phone, encodedPhone, 1),
+            m2: enCrypten(phone.current, encodedPhone, 1),
             s1: smsP1,
-            s2: enCrypten(smsCode, encodedSMS, 1),
+            s2: enCrypten(smsCode.current, encodedSMS, 1),
         }).then(() => {
             navigation.dispatch(StackActions.replace('Home'));
         })
-    }, [phone, smsCode, login, navigation]);
+    }, [login, navigation]);
 
     const getSMSCode = useCallback(() => {
-        const encrypted = sendCodeRSAEncrypt(phone);
+        const encrypted = sendCodeRSAEncrypt(phone.current);
         console.log(encrypted);
 
         smsInputRef.current?.focus();
@@ -64,10 +64,10 @@ const Login = () => {
         <View style={styles.page}>
             <Image style={styles.logo} source={{ uri: 'https://res.coc.10086.cn/res/cdn/coc1-online/fixedPath/coc3/rightsmarket-h5-canvas/img/login-logo.webp' }} />
             <View style={styles.row}>
-                <TextInput style={styles.input} keyboardType='phone-pad' placeholder='请输入您的移动/联通/电信手机号码' onChangeText={setPhone} underlineStyle={styles.underline} />
+                <TextInput style={styles.input} keyboardType='phone-pad' placeholder='请输入您的移动/联通/电信手机号码' onChangeText={(t: string) => phone.current = t} underlineStyle={styles.underline} />
             </View>
             <View style={styles.row}>
-                <TextInput ref={smsInputRef} style={styles.input} placeholder='获取验证码' keyboardType='number-pad' underlineStyle={styles.underline} onChangeText={setSMSCode} />
+                <TextInput ref={smsInputRef} style={styles.input} placeholder='获取验证码' keyboardType='number-pad' underlineStyle={styles.underline} onChangeText={(t: string) => smsCode.current = t} />
                 <CountDownButton style={styles.smsBtn} onPress={getSMSCode} />
             </View>
             <Button style={styles.loginBtn} mode='contained' onPress={doLogin}>登录</Button>
